@@ -1,0 +1,58 @@
+http:
+  routers:
+    user-router:
+      rule: "Host(`localhost`) && PathPrefix(`/api/users`)"
+      entryPoints:
+        - web
+      middlewares:
+        - strip-api-prefix
+      service: user-microservice
+
+    device-router:
+      rule: "Host(`localhost`) && PathPrefix(`/api/devices`)"
+      entryPoints:
+        - web
+      middlewares:
+        - strip-api-prefix
+      service: device-microservice
+
+    auth-router:
+      rule: "Host(`localhost`) && PathPrefix(`/api/auth`)"
+      entryPoints:
+        - web
+      middlewares:
+        - strip-api-prefix
+      service: auth-microservice
+
+    frontend-router:
+      rule: "Host(`localhost`) && PathPrefix(`/`)"
+      entryPoints:
+        - web
+      service: frontend
+
+  middlewares:
+    strip-api-prefix:
+      stripPrefix:
+        prefixes:
+          - "/api"
+
+  services:
+    user-microservice:
+      loadBalancer:
+        servers:
+          - url: "http://user-microservice:8085"
+
+    device-microservice:
+      loadBalancer:
+        servers:
+          - url: "http://device-microservice:8081"
+
+    auth-microservice:
+      loadBalancer:
+        servers:
+          - url: "http://auth-microservice:8082"
+
+    frontend:
+      loadBalancer:
+        servers:
+          - url: "http://frontend:80"

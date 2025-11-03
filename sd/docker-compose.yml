@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  user-microservice:
+    build:
+      context: ./tema1_repo/ds2025_spring_example/demo
+      dockerfile: Dockerfile
+    container_name: user-microservice
+    ports:
+      - "8086:8085"
+    environment:
+      - DB_IP=host.docker.internal
+      - DB_PORT=5432
+      - DB_DBNAME=userdb
+      - DB_USER=postgres
+      - DB_PASSWORD=12345
+    networks:
+      - demo_net
+
+  device-microservice:
+    build:
+      context: ./device_microservice/device-service
+      dockerfile: Dockerfile
+    container_name: device-microservice
+    ports:
+      - "8084:8081"
+    environment:
+      - DB_IP=host.docker.internal
+      - DB_PORT=5432
+      - DB_DBNAME=devicedb
+      - DB_USER=postgres
+      - DB_PASSWORD=12345
+    networks:
+      - demo_net
+
+  auth-microservice:
+    build:
+      context: ./authorization-microservice/authorization_microserviciu/demo
+      dockerfile: Dockerfile
+    container_name: auth-microservice
+    ports:
+      - "8083:8082"
+    environment:
+      - DB_IP=host.docker.internal
+      - DB_PORT=5432
+      - DB_DBNAME=authdb
+      - DB_USER=postgres
+      - DB_PASSWORD=12345
+    networks:
+      - demo_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`) && PathPrefix(`/`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    networks:
+      - demo_net
+
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik-gateway
+    command:
+      - "--providers.file.filename=/etc/traefik/http.yml"
+      - "--entrypoints.web.address=:80"
+      - "--api.insecure=true"
+    ports:
+      - "8088:80"
+      - "8089:8080"
+    volumes:
+      - ./dynamic/http.yml:/etc/traefik/http.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - user-microservice
+      - device-microservice
+      - auth-microservice
+    networks:
+      - demo_net
+
+networks:
+  demo_net:
+    driver: bridge

@@ -1,0 +1,131 @@
+/* src/index.css - STIL NOU ȘI CENTRALIZAT */
+
+/* Reset de bază și Font */
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f9fc; /* Fundal foarte deschis */
+  color: #333;
+}
+
+/* Centrare completă a unui container pe ecran (pentru Login/Home) */
+.center-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* Centrare orizontală */
+  align-items: center; /* Centrare verticală */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Stil pentru titluri */
+h1, h2, h3, h4 {
+  color: #007bff; /* Culoarea primară */
+  font-weight: 600;
+  margin-top: 0;
+}
+
+/* Carduri pentru formulare/secțiuni */
+.card-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* O umbră mai vizibilă */
+  width: 100%;
+  max-width: 450px;
+  margin: 20px auto;
+}
+
+/* Stilizare Inputuri și Select */
+input, select {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+  font-size: 16px;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Stilizare Butoane */
+button, .btn {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.1s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Buton Primar (Adăugare/Login/Update) */
+button[type="submit"], .btn-primary {
+  background-color: #007bff;
+  color: white;
+  width: 100%; /* Face butonul de submit pe toată lățimea */
+  margin-top: 10px;
+}
+
+button[type="submit"]:hover, .btn-primary:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* Butoane de acțiune */
+.btn-edit {
+  background-color: #ffc107;
+  color: #333;
+}
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.item-actions button {
+  margin-left: 8px;
+  padding: 8px 15px; /* Butoane mai mici în carduri */
+}
+
+/* Layout de listă modern (Grid) */
+.dashboard-content {
+  padding: 20px 40px;
+}
+
+.list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Layout responsiv */
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.item-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 6px solid #007bff; /* Accent de culoare */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-details p {
+  margin: 5px 0;
+  line-height: 1.4;
+}
+
+.item-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
