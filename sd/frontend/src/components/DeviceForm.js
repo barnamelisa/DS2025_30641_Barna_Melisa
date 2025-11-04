@@ -36,18 +36,29 @@ export default function DeviceForm({ refresh, editing, setEditing, isClientView,
 
     const handleSubmit = async e => {
         e.preventDefault();
+
         try {
-            if (editing) await updateDevice(editing.id, device);
-            else await createDevice({...device, ownerId: currentUserId}); // Clientul nu adaugă ownerID, dar Adminul da.
+            // transformăm tipurile
+            const payload = {
+                ...device,
+                maxConsumption: parseFloat(device.maxConsumption), // string -> float
+                ownerId: device.ownerId || currentUserId // asigură UUID valid
+            };
+
+            console.log("📦 Payload sent to backend:", payload);
+
+            if (editing) await updateDevice(editing.id, payload);
+            else await createDevice(payload);
 
             setDevice({ name: '', maxConsumption: '', ownerId: '' });
             setEditing(null);
             refresh();
         } catch (err) {
-            console.error("Failed to save device", err);
+            console.error("Failed to save device", err.response?.data || err);
             alert("Error saving device");
         }
     };
+
 
     // 🚀 CORECȚIE 1: Nu afișa formularul de ADĂUGARE dacă ești Client și NU editezi
     if (isClientView && !editing) {
