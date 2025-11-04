@@ -37,8 +37,10 @@ public class UserController {
                 .path("/{id}")
                 .buildAndExpand(id)
                 .toUri();
-        return ResponseEntity.created(location).build(); // 201 + Location header
+        return ResponseEntity.created(location).build();
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDetailsDTO> getUser(@PathVariable UUID id) {
@@ -49,11 +51,12 @@ public class UserController {
     public ResponseEntity<Void> update(@PathVariable UUID id,
                                        @Valid @RequestBody UserDetailsDTO user) {
         userService.update(id, user);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build();
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         userService.delete(id);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build();
     }
 }
